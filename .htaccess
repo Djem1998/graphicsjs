@@ -1,0 +1,2 @@
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.(php|html|htm)\ HTTP/
+RewriteRule ^(.*)index\.(php|html|htm)$ http://graphicsJS/$1 [R=301,L]
