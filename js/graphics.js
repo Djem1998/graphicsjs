@@ -4,7 +4,10 @@ window.onload = function () {
 
     let options = {
         animationEnabled: true,
-        theme: "light",
+        theme: "light1",
+        zoomEnabled: true,
+        height: 490,
+        zoomType: "xy",
         title: {
             text: "Risklio Stock Price",
         },
@@ -12,7 +15,7 @@ window.onload = function () {
             title: "Date",
             titleFontSize: 20,
             includeZero: true,
-            valueFormatString: "DD MMM YYYY"
+            valueFormatString: "DD MMM YYYY",
         },
         axisY: {
             title: "Stock price",
@@ -21,7 +24,7 @@ window.onload = function () {
             includeZero: true,
         },
         toolTip: {
-            shared: true,
+            shared: false,
         },
         data: [{
             type: "line",
@@ -57,7 +60,7 @@ window.onload = function () {
                         price: 'Stock price',
                         markerColor: '#bc0f18',
                         markerType: "circle",
-                        markerSize: 1,
+                        markerSize: 0,
                     });
                 }
             }
@@ -67,7 +70,5 @@ window.onload = function () {
 
     let annotation = $.getJSON("./json/risklio_example_annotations.json");
 
-
     $.getJSON("./json/risklio_example_stockprice.json", addData);
-
 };
