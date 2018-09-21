@@ -6,7 +6,7 @@ window.onload = function () {
         animationEnabled: true,
         theme: "light",
         title: {
-            text: "risklio example stockprice",
+            text: "Risklio Stock Price",
         },
         axisX: {
             title: "Date",
@@ -21,13 +21,12 @@ window.onload = function () {
             includeZero: true,
         },
         toolTip: {
-            shared: false,
+            shared: true,
         },
         data: [{
             type: "line",
             color: "#bc0f18",
-            markerType: "circle",
-            toolTipContent: "<span>{date}: {x}</span><br><span>{price}: {y}</span>",
+            toolTipContent: "<span style='text-align: center'>{title}</span><br><span>{date}: {x}</span><br><span>{price}: {y}</span><br><span>{title_name} </span>{link}",
             dataPoints: dataPoints,
         }]
     };
@@ -36,15 +35,38 @@ window.onload = function () {
         for (let i = 0; i < data.length; i++) {
             let oldDate = data[i].Date.split('/');
             let newDate = oldDate[2] + '/' + oldDate[1] + '/' + oldDate[0];
-            dataPoints.push({
-                x: new Date(Date.parse(newDate)),
-                y: data[i].Stock_price,
-                date: 'Date',
-                price: 'Stock price'
-            });
+            for (let j = 0; j < annotation.responseJSON.length; j++) {
+                if (annotation.responseJSON[j].Date === data[i].Date) {
+                    dataPoints.push({
+                        x: new Date(Date.parse(newDate)),
+                        y: data[i].Stock_price,
+                        date: 'Date',
+                        price: 'Stock price',
+                        markerColor: annotation.responseJSON[j].Annotation_color,
+                        markerType: "circle",
+                        markerSize: 20,
+                        title: annotation.responseJSON[j].Annotation_title,
+                        link: annotation.responseJSON[j].Annotation_link,
+                        title_name: 'Annotation title: ',
+                    });
+                } else {
+                    dataPoints.push({
+                        x: new Date(Date.parse(newDate)),
+                        y: data[i].Stock_price,
+                        date: 'Date',
+                        price: 'Stock price',
+                        markerColor: '#bc0f18',
+                        markerType: "circle",
+                        markerSize: 1,
+                    });
+                }
+            }
         }
         $("#chartContainer").CanvasJSChart(options);
     }
+
+    let annotation = $.getJSON("./json/risklio_example_annotations.json");
+
 
     $.getJSON("./json/risklio_example_stockprice.json", addData);
 
